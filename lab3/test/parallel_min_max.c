@@ -15,7 +15,6 @@
 #include "find_min_max.h"
 #include "utils.h"
 
-
 int main(int argc, char **argv) {
   int seed = -1;
   int array_size = -1;
@@ -97,12 +96,6 @@ int main(int argc, char **argv) {
   int f_pipes[2];
   pipe(f_pipes);
   /*
-  int *pip_mass=malloc(sizeof(int) * pnum*2);
-  for(int i=0; i<pnum*2; i+=2){
-      pipe((pip_mass+i));
-  }
-  */
-  /*
   if((pipe(f_pipes) != 0) && (with_files == false)){
       printf("Pipe failed!\n");
       return 1;
@@ -136,7 +129,6 @@ int main(int argc, char **argv) {
         } else {
           // use pipe here
           write(f_pipes[1], &ret, sizeof(struct MinMax));
-          //write((pip_mass+i*2)[1], &ret, sizeof(struct MinMax));
         }
         return 0;
       }
@@ -177,7 +169,6 @@ int main(int argc, char **argv) {
     } else {
       // read from pipes
       read(f_pipes[0], ret, sizeof(struct MinMax));
-      //read((pip_mass+i*2)[0], ret, sizeof(struct MinMax));
     }
     
     min = ret->min;
@@ -194,7 +185,6 @@ int main(int argc, char **argv) {
   elapsed_time += (finish_time.tv_usec - start_time.tv_usec) / 1000.0;
 
   free(array);
-  //free(pip_mass);
 
   printf("Min: %d\n", min_max.min);
   printf("Max: %d\n", min_max.max);

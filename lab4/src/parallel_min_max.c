@@ -10,16 +10,23 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <signal.h>
+
 #include <getopt.h>
 
 #include "find_min_max.h"
 #include "utils.h"
 
+void kill_funk(int signo);
+
+pid_t *pids;
+int pidsNum=0;
 
 int main(int argc, char **argv) {
   int seed = -1;
   int array_size = -1;
   int pnum = -1;
+  int timeout = -1;
   bool with_files = false;
 
   while (true) {
@@ -29,6 +36,7 @@ int main(int argc, char **argv) {
                                       {"array_size", required_argument, 0, 0},
                                       {"pnum", required_argument, 0, 0},
                                       {"by_files", no_argument, 0, 'f'},
+                                      {"timeout", required_argument, 0, 0},
                                       {0, 0, 0, 0}};
 
     int option_index = 0;
@@ -56,6 +64,9 @@ int main(int argc, char **argv) {
             break;
           case 3:
             with_files = true;
+            break;
+          case 4:
+            timeout = atoi(optarg);
             break;
 
           defalut:
@@ -110,6 +121,9 @@ int main(int argc, char **argv) {
   */
   //
   
+  pids = malloc(sizeof(pid_t) * pnum);
+  pidsNum = pnum;
+  
   for (int i = 0; i < pnum; i++) {
     pid_t child_pid = fork();
     if (child_pid >= 0) {
@@ -140,19 +154,30 @@ int main(int argc, char **argv) {
         }
         return 0;
       }
+      pids[i] = child_pid;
     } else {
       printf("Fork failed!\n");
       return 1;
     }
   }
 
-  while (active_child_processes > 0) {
-    // your code here
-    int status0;
-    wait(&status0);
 
-    active_child_processes -= 1;
-  }
+    if(timeout>0){
+        //
+        printf("Timeout! start\n");
+        signal(SIGALRM, kill_funk);
+        alarm(timeout);
+        sleep(timeout+2);
+        //
+    }
+    else{
+        while (active_child_processes > 0) {
+            // your code here
+            int status0;
+            wait(&status0);
+            active_child_processes -= 1;
+        }
+    }
 
   struct MinMax min_max;
   min_max.min = INT_MAX;
@@ -201,4 +226,15 @@ int main(int argc, char **argv) {
   printf("Elapsed time: %fms\n", elapsed_time);
   fflush(NULL);
   return 0;
+}
+
+void kill_funk(int signo){
+    //
+    int status0=0;
+    for(int i =0; i<pidsNum; i++){
+        kill(pids[i], SIGKILL);
+        waitpid(pids[i], &status0, 0);
+        printf("kill: %d\n", i);
+    }
+    //
 }

@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+
   int array_size = atoi(argv[2]);
   if (array_size <= 0) {
     printf("array_size is a positive number\n");
