@@ -4,16 +4,25 @@
 
 ### Необходимые знания
 
-1. TCP и TCP/IP
-2. TCP vs UDP
-1. Системный вызов `socket`
-2. Системный вызов `bind`
-2. Системный вызов `listen`
-3. Системный вызов `accept`
-4. Системный вызов `recv`
-5. Системный вызов `send`
-6. Системный вызов `close`
-7. Системный вызов `connect`
+1. TCP и TCP/IP  http://www.codenet.ru/webmast/tcpip.php
+2. TCP vs UDP     http://www.codenet.ru/webmast/tcpip.php
+1. Системный вызов `socket`   https://www.opennet.ru/man.shtml?topic=socket&category=2&russian=0
+2. Системный вызов `bind`    https://www.opennet.ru/man.shtml?topic=bind&category=2&russian=0
+2. Системный вызов `listen`  https://www.opennet.ru/man.shtml?topic=listen&category=2&russian=0
+3. Системный вызов `accept`   https://www.opennet.ru/cgi-bin/opennet/man.cgi?topic=accept&category=2
+4. Системный вызов `recv`  https://www.opennet.ru/man.shtml?topic=recv&category=2&russian=0
+5. Системный вызов `send`   https://www.opennet.ru/man.shtml?topic=send&category=2&russian=0
+6. Системный вызов `close`   https://www.opennet.ru/man.shtml?topic=close&category=2&russian=0
+7. Системный вызов `connect`  https://www.opennet.ru/man.shtml?topic=connect&category=2&russian=0
+
+hton (s, l ,т.п.) -преобразует uint16_t в набор байт для сетевого соединения (меняет местами байты)  https://www.opennet.ru/man.shtml?topic=htons&category=3&russian=0
+INADDR_ANY = все адреса локального хоста (0.0.0.0);
+https://www.opennet.ru/docs/RUS/socket/node4.html
+
+setsockopt  -манипулирует флагами  https://www.opennet.ru/man.shtml?topic=setsockopt&category=2&russian=0
+
+shutdown - уведомить об завершении подключения - https://www.opennet.ru/man.shtml?topic=shutdown&category=8&russian=2
+//-----------------
 
 В предыдущей лабораторной работе вы распаралелливали вычисление факториала по модулю с помощью потоков. В этой работе вы пойдете еще дальше: вы распараллелите эту работу еще и между серверами. 
 
